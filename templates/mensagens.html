@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Mensagens{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            {% if session.user_tipo != 'admin' %}
+                <a href="/">Início</a>
+                <a href="/agendar">Agendar</a>
+                <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            {% else %}
+                <a href="/admin/agendamentos">Agendamentos</a>
+            {% endif %}
+            
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+    </div>
+</header>
+
+<main class="wa-container">
+    <div class="wa-app">
+        
+        <div class="wa-sidebar" id="wa-sidebar">
+            <div class="wa-header">
+                <h3><i class="fa-regular fa-comments"></i> Conversas</h3>
+            </div>
+            <div class="wa-contact-list">
+                {% if contatos %}
+                    {% for contato in contatos %}
+                        <div class="wa-contact" data-id="{{ contato.id }}">
+                            <div class="wa-avatar"><i class="fa-solid fa-user"></i></div>
+                            <div class="wa-contact-info">
+                                <h4>{{ contato.nome }}</h4>
+                                {% if session.user_tipo == 'admin' %}
+                                    <p>Cliente</p>
+                                {% else %}
+                                    <p>Suporte Barbearia</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="padding: 20px; color: var(--muted); text-align: center;">Nenhum contato encontrado.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="wa-chat-area" id="wa-chat-area">
+            <div class="wa-chat-header" id="wa-chat-header" style="display: none;">
+                <button class="btn-back-chat" id="btn-back-chat"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="wa-avatar"><i class="fa-solid fa-user"></i></div>
+                <h3 id="wa-chat-title">Selecione um contato</h3>
+            </div>
+            
+            <div class="wa-chat-placeholder" id="wa-chat-placeholder">
+                <div class="chat-brand-icon">
+                    <i class="fa-solid fa-scissors"></i>
+                </div>
+                <h2>Atendimento Prime</h2>
+                <p>Selecione um contato na lateral para iniciar o atendimento.</p>
+            </div>
+
+            <div class="wa-chat-messages" id="wa-chat-messages" style="display: none;">
+                </div>
+
+            <div class="wa-chat-input" id="wa-chat-input-area" style="display: none;">
+                <input type="text" id="wa-msg-input" placeholder="Digite uma mensagem..." autocomplete="off">
+                <button id="wa-btn-send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+    </div>
+</main>
+{% endblock %}

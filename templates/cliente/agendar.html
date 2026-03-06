@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Agendar{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/">Início</a>
+            <a href="/agendar">Agendar</a>
+            <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="schedule-page">
+    <section class="schedule-hero">
+        <div class="container">
+            <div class="schedule-hero-content">
+                <span class="section-tag">Agendamento online</span>
+                <h1>Monte seu horário na Prime Corte</h1>
+                <p>
+                    Escolha o serviço, selecione o profissional, defina a data e o horário,
+                    e finalize seu agendamento em poucos passos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section">
+        <div class="container">
+            <div class="schedule-layout">
+                <form class="schedule-form" id="schedule-form" method="POST" action="/agendar">
+                    <div class="form-block">
+                        <div class="form-block-header">
+                            <span class="form-step">01</span>
+                            <div>
+                                <h2>Escolha o serviço</h2>
+                                <p>Selecione o serviço que deseja agendar.</p>
+                            </div>
+                        </div>
+
+                        <div class="selection-grid service-options">
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte" checked>
+                                <div class="select-card-content">
+                                    <h3>Corte</h3>
+                                    <p>Corte masculino com acabamento preciso.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte + Barba">
+                                <div class="select-card-content">
+                                    <h3>Corte + Barba</h3>
+                                    <p>Combo clássico para sair alinhado.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Barba">
+                                <div class="select-card-content">
+                                    <h3>Barba</h3>
+                                    <p>Desenho, alinhamento e finalização da barba.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Sobrancelha">
+                                <div class="select-card-content">
+                                    <h3>Sobrancelha</h3>
+                                    <p>Ajuste fino para um visual mais limpo.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Combo / Corte + Pigmentação">
+                                <div class="select-card-content">
+                                    <h3>Combo / Corte + Pigmentação</h3>
+                                    <p>Mais presença e acabamento premium.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Combo / Corte + Sobrancelha + Pigmentação">
+                                <div class="select-card-content">
+                                    <h3>Combo / Corte + Sobrancelha + Pigmentação</h3>
+                                    <p>Pacote completo para um visual marcante.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Combo / Corte + Barba + Pigmentação">
+                                <div class="select-card-content">
+                                    <h3>Combo / Corte + Barba + Pigmentação</h3>
+                                    <p>Combo premium com acabamento completo.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Combo / Corte + Barba + Sobrancelha">
+                                <div class="select-card-content">
+                                    <h3>Combo / Corte + Barba + Sobrancelha</h3>
+                                    <p>Visual alinhado da cabeça ao rosto.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte + Botox (Progressiva)">
+                                <div class="select-card-content">
+                                    <h3>Corte + Botox (Progressiva)</h3>
+                                    <p>Tratamento capilar com acabamento final.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte + Nevou">
+                                <div class="select-card-content">
+                                    <h3>Corte + Nevou</h3>
+                                    <p>Estilo diferenciado para visual de impacto.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte + Relaxamento">
+                                <div class="select-card-content">
+                                    <h3>Corte + Relaxamento</h3>
+                                    <p>Mais praticidade e acabamento refinado.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Corte + Sobrancelha">
+                                <div class="select-card-content">
+                                    <h3>Corte + Sobrancelha</h3>
+                                    <p>Combo objetivo e funcional para o dia a dia.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Luzes">
+                                <div class="select-card-content">
+                                    <h3>Luzes</h3>
+                                    <p>Serviço para quem quer destacar o visual.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card">
+                                <input type="radio" name="servico" value="Pezinho">
+                                <div class="select-card-content">
+                                    <h3>Pezinho</h3>
+                                    <p>Acabamento rápido para manter o corte em dia.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <div class="form-block-header">
+                            <span class="form-step">02</span>
+                            <div>
+                                <h2>Escolha o profissional</h2>
+                                <p>Selecione quem vai realizar o atendimento.</p>
+                            </div>
+                        </div>
+
+                        <div class="selection-grid professional-options">
+                            <label class="select-card professional-card">
+                                <input type="radio" name="profissional" value="André" checked>
+                                <div class="select-card-content">
+                                    <h3>André</h3>
+                                    <p>Especialista em corte e barba.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card professional-card">
+                                <input type="radio" name="profissional" value="Carlos">
+                                <div class="select-card-content">
+                                    <h3>Carlos</h3>
+                                    <p>Focado em acabamento, sobrancelha e combos.</p>
+                                </div>
+                            </label>
+
+                            <label class="select-card professional-card">
+                                <input type="radio" name="profissional" value="Mateus">
+                                <div class="select-card-content">
+                                    <h3>Mateus</h3>
+                                    <p>Atendimento premium e estilos modernos.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <div class="form-block-header">
+                            <span class="form-step">03</span>
+                            <div>
+                                <h2>Escolha a data e o horário</h2>
+                                <p>Defina quando deseja ser atendido.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-input-grid">
+                            <div class="input-group">
+                                <label for="data">Data</label>
+                                <input type="date" id="data" name="data" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="horario">Horário</label>
+                                <select id="horario" name="horario" required>
+                                    <option value="">Selecione um horário</option>
+                                    {% for horario in horarios %}
+                                        <option value="{{ horario }}">{{ horario }}</option>
+                                    {% endfor %}
+                                </select>
+                                <small id="horario-help" class="horario-help">
+                                    Selecione a data e o profissional para ver os horários disponíveis.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <div class="form-block-header">
+                            <span class="form-step">04</span>
+                            <div>
+                                <h2>Observações</h2>
+                                <p>Adicione algum detalhe importante sobre o atendimento.</p>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="observacao">Observação</label>
+                            <textarea
+                                id="observacao"
+                                name="observacao"
+                                rows="5"
+                                placeholder="Ex.: quero manter o volume em cima, acabamento mais baixo na lateral, etc."
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary schedule-submit">
+                        Confirmar agendamento
+                    </button>
+                </form>
+
+                <aside class="schedule-summary">
+                    <div class="summary-card">
+                        <span class="section-tag">Resumo</span>
+                        <h2>Seu agendamento</h2>
+                        <p>Confira os dados selecionados antes de confirmar.</p>
+
+                        <div class="summary-items">
+                            <div class="summary-item">
+                                <span>Serviço</span>
+                                <strong id="summary-servico">Corte</strong>
+                            </div>
+
+                            <div class="summary-item">
+                                <span>Profissional</span>
+                                <strong id="summary-profissional">André</strong>
+                            </div>
+
+                            <div class="summary-item">
+                                <span>Data</span>
+                                <strong id="summary-data">Não selecionada</strong>
+                            </div>
+
+                            <div class="summary-item">
+                                <span>Horário</span>
+                                <strong id="summary-horario">Não selecionado</strong>
+                            </div>
+
+                            <div class="summary-item summary-item-observacao">
+                                <span>Observação</span>
+                                <strong id="summary-observacao">Nenhuma observação adicionada.</strong>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

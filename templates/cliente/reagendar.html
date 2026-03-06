@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Reagendar{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/">Início</a>
+            <a href="/agendar">Agendar</a>
+            <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="auth-page">
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-card">
+                <span class="section-tag">Reagendamento</span>
+                <h1>Alterar horário</h1>
+                <p>
+                    Serviço: <strong>{{ agendamento.servico }}</strong><br>
+                    Profissional: <strong>{{ agendamento.profissional }}</strong>
+                </p>
+
+                <form method="POST" class="auth-form" id="reagendar-form" data-agendamento-id="{{ agendamento.id }}">
+                    <div class="input-group">
+                        <label for="data">Nova data</label>
+                        <input type="date" id="data" name="data" value="{{ agendamento.data }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="horario">Novo horário</label>
+                        <select id="horario" name="horario" required>
+                            <option value="{{ agendamento.horario }}">{{ agendamento.horario }}</option>
+                            {% for horario in horarios %}
+                                <option value="{{ horario }}">{{ horario }}</option>
+                            {% endfor %}
+                        </select>
+                        <small id="horario-help" class="horario-help">
+                            Os horários disponíveis serão atualizados automaticamente.
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-submit">Salvar reagendamento</button>
+                </form>
+
+                <div class="auth-links">
+                    <a href="/cliente/agendamentos">Voltar para meus agendamentos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

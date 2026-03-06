@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Prime Corte | Meus Agendamentos{% endblock %}
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/">Início</a>
+            <a href="/agendar">Agendar</a>
+            <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="dashboard-page">
+    <section class="schedule-hero">
+        <div class="container">
+            <div class="schedule-hero-content">
+                <span class="section-tag">Área do cliente</span>
+                <h1>Meus agendamentos</h1>
+                <p>Olá, {{ session.user_nome }}. Aqui você pode acompanhar, remarcar ou falar com a barbearia.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section">
+        <div class="container">
+            <div class="dashboard-actions">
+                <a href="/agendar" class="btn-primary">Fazer novo agendamento</a>
+            </div>
+
+            <div class="dashboard-grid">
+                {% if agendamentos %}
+                    {% for agendamento in agendamentos %}
+                        <div class="dashboard-card {% if agendamento.status == 'cancelado' %}card-cancelado{% endif %}">
+                            <div class="dashboard-card-top">
+                                {% if agendamento.status == 'confirmado' %}
+                                    <span class="dashboard-badge badge-confirmado">Confirmado</span>
+                                {% elif agendamento.status == 'cancelado' %}
+                                    <span class="dashboard-badge badge-cancelado">Cancelado</span>
+                                {% else %}
+                                    <span class="dashboard-badge badge-pendente">Pendente</span>
+                                {% endif %}
+                                <span class="dashboard-id">#{{ agendamento.id }}</span>
+                            </div>
+                            
+                            <h3>{{ agendamento.servico }}</h3>
+                            <p><strong>Profissional:</strong> {{ agendamento.profissional }}</p>
+                            <p><strong>Data:</strong> {{ agendamento.data }} às {{ agendamento.horario }}</p>
+
+                            <div class="dashboard-card-actions actions-bordered" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px;">
+                                
+                                <a href="/mensagens" class="btn-secondary small-btn" style="border-color: var(--gold); color: var(--gold); gap: 8px;">
+                                    <i class="fa-regular fa-comments"></i> Falar com a Barbearia
+                                </a>
+                                
+                                {% if agendamento.status != 'cancelado' %}
+                                    <a href="/cliente/agendamento/reagendar/{{ agendamento.id }}" class="btn-secondary small-btn">Remarcar</a>
+                                    <a href="/cliente/agendamento/cancelar/{{ agendamento.id }}" class="btn-secondary small-btn btn-cancel">Cancelar</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-box">
+                        <h3>Você ainda não tem agendamentos.</h3>
+                        <p>Crie seu primeiro horário na Prime Corte.</p>
+                        <a href="/agendar" class="btn-primary">Agendar agora</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

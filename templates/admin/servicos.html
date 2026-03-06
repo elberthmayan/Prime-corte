@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Admin Serviços{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/">Início</a>
+            <a href="/admin/agendamentos">Agendamentos</a>
+            <a href="/admin/servicos">Serviços</a>
+            <a href="/logout" class="btn-nav-outline">Sair</a>
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="dashboard-page">
+    <section class="schedule-hero">
+        <div class="container">
+            <div class="schedule-hero-content">
+                <span class="section-tag">Painel administrativo</span>
+                <h1>Serviços cadastrados</h1>
+                <p>Gerencie os serviços disponíveis no sistema de agendamento.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section">
+        <div class="container">
+            <div class="dashboard-actions">
+                <a href="/admin/servicos/novo" class="btn-primary">Cadastrar novo serviço</a>
+            </div>
+
+            <div class="dashboard-grid">
+                {% if servicos %}
+                    {% for servico in servicos %}
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-top">
+                                <span class="dashboard-badge">
+                                    {% if servico.ativo == 1 %}ativo{% else %}inativo{% endif %}
+                                </span>
+                                <span class="dashboard-id">#{{ servico.id }}</span>
+                            </div>
+
+                            <h3>{{ servico.nome }}</h3>
+                            <p><strong>Descrição:</strong> {{ servico.descricao if servico.descricao else "Sem descrição" }}</p>
+
+                            <div class="dashboard-card-actions">
+                                <a href="/admin/servicos/editar/{{ servico.id }}" class="btn-primary small-btn">Editar</a>
+
+                                {% if servico.ativo == 1 %}
+                                    <a href="/admin/servicos/inativar/{{ servico.id }}" class="btn-secondary small-btn">Inativar</a>
+                                {% else %}
+                                    <a href="/admin/servicos/reativar/{{ servico.id }}" class="btn-secondary small-btn">Reativar</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-box">
+                        <h3>Nenhum serviço cadastrado.</h3>
+                        <p>Cadastre serviços para aparecerem no agendamento.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

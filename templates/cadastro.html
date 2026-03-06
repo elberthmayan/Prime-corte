@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Cadastro{% endblock %}
+
+{% block content %}
+<main class="split-auth-page">
+    <div class="split-banner split-banner-cadastro">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para o Início</a>
+            <div class="brand-hero">
+                <i class="fa-solid fa-star"></i>
+                <h2>Novo Cliente</h2>
+                <p>Junte-se à barbearia que é referência. Tenha total controle sobre seus cortes e horários.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="split-form-section">
+        <div class="form-box form-box-wide">
+            <div class="auth-header text-left">
+                <a href="/" class="back-link-mobile"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+                
+                <h1>Crie sua conta</h1>
+                <p>Preencha os dados abaixo para fazer parte da Prime Corte.</p>
+            </div>
+
+            <form method="POST" class="auth-form two-cols">
+                <div class="input-group premium-input full-width">
+                    <label for="nome">Nome Completo</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user left-icon"></i>
+                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                    </div>
+                </div>
+
+                <div class="input-group premium-input full-width">
+                    <label for="email">E-mail</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope left-icon"></i>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                    </div>
+                </div>
+
+                <div class="input-group premium-input">
+                    <label for="senha">Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock left-icon"></i>
+                        <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-group premium-input">
+                    <label for="confirmar_senha">Confirmar Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-check-double left-icon"></i>
+                        <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a senha" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary auth-submit premium-btn full-width mt-2">
+                    Finalizar Cadastro <i class="fa-solid fa-check"></i>
+                </button>
+            </form>
+
+            <div class="auth-links text-left mt-4">
+                <p class="text-muted">Já faz parte da barbearia? <a href="/login" class="gold-link">Faça login aqui</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

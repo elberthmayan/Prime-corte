@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Meu Perfil{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            {% if session.user_tipo != 'admin' %}
+                <a href="/">Início</a>
+                <a href="/agendar">Agendar</a>
+                <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            {% else %}
+                <a href="/admin/agendamentos">Agendamentos</a>
+            {% endif %}
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+    </div>
+</header>
+
+<main class="auth-page premium-auth">
+    <div class="glow glow-auth-1"></div>
+    
+    <section class="auth-section">
+        <div class="container auth-container">
+            <div class="auth-card premium-card">
+                <div class="auth-header text-center">
+                    <span class="section-tag"><i class="fa-solid fa-user-shield"></i> Segurança</span>
+                    <h1>Meu Perfil</h1>
+                    <p>Atualize seus dados pessoais e senha de acesso.</p>
+                </div>
+
+                <form method="POST" class="auth-form">
+                    <div class="input-group premium-input">
+                        <label for="nome">Nome Completo</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user left-icon"></i>
+                            <input type="text" id="nome" name="nome" value="{{ usuario.nome }}" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group premium-input">
+                        <label for="email">E-mail</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope left-icon"></i>
+                            <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group premium-input mt-4">
+                        <label for="nova_senha">Nova Senha (opcional)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock left-icon"></i>
+                            <input type="password" id="nova_senha" name="nova_senha" placeholder="Digite apenas se quiser mudar">
+                            <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-submit premium-btn">
+                        Salvar Alterações <i class="fa-solid fa-check"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

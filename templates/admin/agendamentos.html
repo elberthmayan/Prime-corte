@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Agendamentos{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Prime Corte</span>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/admin/agendamentos">Agendamentos</a>
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="dashboard-page">
+    <section class="schedule-hero">
+        <div class="container">
+            <div class="schedule-hero-content">
+                <span class="section-tag">Gestão Avançada</span>
+                <h1>Agendamentos</h1>
+                <p>Monitoriza, confirma e cancela horários no sistema.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <span><i class="fa-solid fa-calendar-check"></i> Hoje</span>
+                    <strong>{{ total_hoje }}</strong>
+                </div>
+                <div class="stats-card">
+                    <span><i class="fa-solid fa-clock"></i> Pendentes</span>
+                    <strong>{{ total_agendado }}</strong>
+                </div>
+                <div class="stats-card">
+                    <span><i class="fa-solid fa-check-double"></i> Confirmados</span>
+                    <strong>{{ total_confirmado }}</strong>
+                </div>
+                <div class="stats-card">
+                    <span><i class="fa-solid fa-ban"></i> Cancelados</span>
+                    <strong>{{ total_cancelado }}</strong>
+                </div>
+                <div class="stats-card">
+                    <span><i class="fa-solid fa-layer-group"></i> Total</span>
+                    <strong>{{ total_agendamentos }}</strong>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                {% if agendamentos %}
+                    {% for agendamento in agendamentos %}
+                        <div class="dashboard-card {% if agendamento.status == 'cancelado' %}card-cancelado{% endif %}">
+                            <div class="dashboard-card-top">
+                                {% if agendamento.status == 'confirmado' %}
+                                    <span class="dashboard-badge badge-confirmado">Confirmado</span>
+                                {% elif agendamento.status == 'cancelado' %}
+                                    <span class="dashboard-badge badge-cancelado">Cancelado</span>
+                                {% else %}
+                                    <span class="dashboard-badge badge-pendente">Pendente</span>
+                                {% endif %}
+                                <span class="dashboard-id">#{{ agendamento.id }}</span>
+                            </div>
+
+                            <h3 style="margin-bottom: 5px;">{{ agendamento.servico }}</h3>
+                            <p class="txt-gold"><i class="fa-regular fa-calendar"></i> {{ agendamento.data }} às {{ agendamento.horario }}</p>
+                            <p><strong><i class="fa-regular fa-user"></i> Cliente:</strong> {{ agendamento.cliente_nome if agendamento.cliente_nome else "Não identificado" }}</p>
+                            <p><strong><i class="fa-solid fa-scissors"></i> Profissional:</strong> {{ agendamento.profissional }}</p>
+                            
+                            {% if agendamento.observacao %}
+                                <p class="obs-box"><strong>Obs:</strong> {{ agendamento.observacao }}</p>
+                            {% endif %}
+
+                            <div class="dashboard-card-actions actions-bordered" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                {% if agendamento.status == 'agendado' %}
+                                    <a href="/admin/agendamento/confirmar/{{ agendamento.id }}" class="btn-secondary small-btn btn-confirm">
+                                        <i class="fa-solid fa-check"></i> Confirmar
+                                    </a>
+                                {% endif %}
+
+                                {% if agendamento.status != 'cancelado' %}
+                                    <a href="/admin/agendamento/cancelar/{{ agendamento.id }}" class="btn-secondary small-btn btn-cancel">
+                                        <i class="fa-solid fa-ban"></i> Cancelar
+                                    </a>
+                                {% else %}
+                                    <button type="button" class="btn-secondary small-btn btn-delete btn-open-delete-modal" data-url="/admin/agendamento/excluir/{{ agendamento.id }}">
+                                        <i class="fa-solid fa-trash"></i> Excluir
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-box">
+                        <h3>Nenhum agendamento encontrado.</h3>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="delete-modal" class="chat-modal">
+    <div class="chat-modal-content custom-alert-modal">
+        <div class="alert-icon-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3>Tem certeza?</h3>
+        <p>Você vai apagar este registro para sempre. Esta ação não pode ser desfeita.</p>
+        <div class="alert-actions">
+            <button id="cancel-delete" class="btn-secondary">Cancelar</button>
+            <a href="#" id="confirm-delete-btn" class="btn-primary" style="background: #ef4444; border-color: #ef4444; color: white; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.25);">Sim, Excluir</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
