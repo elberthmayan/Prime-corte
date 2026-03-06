@@ -287,4 +287,4 @@ def admin_excluir_agendamento(agendamento_id):
 @app.route("/admin/servicos")
 def admin_servicos(): return render_template("admin/servicos.html", servicos=buscar_servicos_ativos())
 
-if __name__ == "__main__": app.run(host="0.0.0.0", port=81, debug=True)
+if __name__ == "__main__": app.run(host="0.0.0.0", port=5000, debug=True)
