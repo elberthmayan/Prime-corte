@@ -12,11 +12,6 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-def _column_exists(cursor, table_name, column_name):
-    cursor.execute(f"PRAGMA table_info({table_name})")
-    columns = cursor.fetchall()
-    return any(column["name"] == column_name for column in columns)
-
 def init_db():
     conn = get_connection()
     cursor = conn.cursor()
@@ -26,6 +21,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
+            telefone TEXT,
             senha TEXT NOT NULL,
             tipo TEXT NOT NULL DEFAULT 'cliente',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -37,6 +33,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL UNIQUE,
             descricao TEXT,
+            valor REAL NOT NULL DEFAULT 0.0,
             ativo INTEGER NOT NULL DEFAULT 1,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -57,7 +54,6 @@ def init_db():
         )
     """)
 
-    # NOVO: Tabela Global de Mensagens (Pique WhatsApp)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS user_messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,29 +67,37 @@ def init_db():
         )
     """)
 
-    if not _column_exists(cursor, "appointments", "user_id"):
-        cursor.execute("ALTER TABLE appointments ADD COLUMN user_id INTEGER")
-    if not _column_exists(cursor, "appointments", "status"):
-        cursor.execute("ALTER TABLE appointments ADD COLUMN status TEXT NOT NULL DEFAULT 'agendado'")
+    # NOVIDADE AQUI: Adicionada a coluna "foto"
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS profissionais (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL UNIQUE,
+            foto TEXT DEFAULT NULL,
+            ativo INTEGER NOT NULL DEFAULT 1
+        )
+    """)
 
     admin_email = "admin@primecorte.com"
-    admin_senha = generate_password_hash("admin123")
     cursor.execute("SELECT id FROM users WHERE email = ?", (admin_email,))
-    admin = cursor.fetchone()
-    if not admin:
-        cursor.execute("INSERT INTO users (nome, email, senha, tipo) VALUES (?, ?, ?, ?)", 
-                       ("Administrador", admin_email, admin_senha, "admin"))
+    if not cursor.fetchone():
+        cursor.execute("INSERT INTO users (nome, email, telefone, senha, tipo) VALUES (?, ?, ?, ?, ?)", 
+                       ("Administrador", admin_email, "", generate_password_hash("admin123"), "admin"))
 
     servicos_padrao = [
-        ("Corte", "Corte masculino com acabamento preciso."),
-        ("Corte + Barba", "Combo clássico para sair alinhado."),
-        ("Barba", "Desenho, alinhamento e finalização da barba."),
-        ("Sobrancelha", "Ajuste fino para um visual mais limpo.")
+        ("Corte", "Corte masculino preciso.", 35.00),
+        ("Corte + Barba", "Combo clássico.", 60.00),
+        ("Barba", "Desenho e alinhamento.", 30.00)
     ]
-    for nome, descricao in servicos_padrao:
-        cursor.execute("SELECT id FROM services WHERE nome = ?", (nome,))
+    for n, d, v in servicos_padrao:
+        cursor.execute("SELECT id FROM services WHERE nome = ?", (n,))
         if not cursor.fetchone():
-            cursor.execute("INSERT INTO services (nome, descricao, ativo) VALUES (?, ?, 1)", (nome, descricao))
+            cursor.execute("INSERT INTO services (nome, descricao, valor, ativo) VALUES (?, ?, ?, 1)", (n, d, v))
+
+    profissionais_padrao = ["André", "Carlos", "Mateus"]
+    for p in profissionais_padrao:
+        cursor.execute("SELECT id FROM profissionais WHERE nome = ?", (p,))
+        if not cursor.fetchone():
+            cursor.execute("INSERT INTO profissionais (nome) VALUES (?)", (p,))
 
     conn.commit()
     conn.close()

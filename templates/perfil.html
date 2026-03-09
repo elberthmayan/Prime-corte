@@ -10,62 +10,103 @@
             <span>Prime Corte</span>
         </div>
         <nav class="nav-menu" id="nav-menu">
-            {% if session.user_tipo != 'admin' %}
+            {% if session.user_tipo == 'admin' %}
+                <a href="/admin/agendamentos">Agendamentos</a>
+                <a href="/admin/servicos">Serviços</a>
+                <a href="/admin/profissionais">Profissionais</a>
+            {% else %}
                 <a href="/">Início</a>
                 <a href="/agendar">Agendar</a>
                 <a href="/cliente/agendamentos">Meus Agendamentos</a>
-            {% else %}
-                <a href="/admin/agendamentos">Agendamentos</a>
             {% endif %}
             <a href="/mensagens">Mensagens</a>
-            <a href="/perfil">Perfil</a>
+            <a href="/perfil" style="color: var(--gold);">Perfil</a>
             <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
         </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </div>
 </header>
 
-<main class="auth-page premium-auth">
-    <div class="glow glow-auth-1"></div>
-    
+<main class="auth-page">
+    <!-- Efeitos de luz de fundo restaurados -->
+    <div class="glow glow-1" style="top: 20%; left: 20%;"></div>
+    <div class="glow glow-2" style="bottom: 20%; right: 20%;"></div>
+
     <section class="auth-section">
         <div class="container auth-container">
-            <div class="auth-card premium-card">
-                <div class="auth-header text-center">
-                    <span class="section-tag"><i class="fa-solid fa-user-shield"></i> Segurança</span>
-                    <h1>Meu Perfil</h1>
-                    <p>Atualize seus dados pessoais e senha de acesso.</p>
+            
+            <div class="auth-card auth-card-wide" style="max-width: 680px; position: relative; z-index: 10;">
+                
+                <!-- Cabeçalho do Perfil com Avatar Pulsante restaurado -->
+                <div class="profile-showcase">
+                    <div class="profile-avatar-glow">
+                        <div class="profile-avatar">
+                            {{ usuario.nome[0] }}
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1>{{ usuario.nome }}</h1>
+                        <span class="user-badge">
+                            {% if session.user_tipo == 'admin' %}
+                                <i class="fa-solid fa-crown"></i> Administrador
+                            {% else %}
+                                <i class="fa-solid fa-star"></i> Cliente Premium
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
 
+                <!-- Formulário com Inputs Premium -->
                 <form method="POST" class="auth-form">
-                    <div class="input-group premium-input">
-                        <label for="nome">Nome Completo</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-user left-icon"></i>
-                            <input type="text" id="nome" name="nome" value="{{ usuario.nome }}" required>
+                    
+                    <div class="profile-form-grid">
+                        <div class="input-group premium-input">
+                            <label for="nome">Nome Completo</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-user left-icon"></i>
+                                <input type="text" id="nome" name="nome" value="{{ usuario.nome }}" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group premium-input">
+                            <label for="email">E-mail</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-envelope left-icon"></i>
+                                <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="input-group premium-input">
-                        <label for="email">E-mail</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-envelope left-icon"></i>
-                            <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+                    <div class="profile-form-grid">
+                        <div class="input-group premium-input">
+                            <label for="telefone">Telefone</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-phone left-icon"></i>
+                                <input type="text" id="telefone" name="telefone" value="{{ usuario.telefone or '' }}" placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+
+                        <div class="input-group premium-input">
+                            <label for="nova_senha">Nova Senha</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock left-icon"></i>
+                                <input type="password" id="nova_senha" name="nova_senha" placeholder="Apenas se quiser alterar">
+                                <button type="button" class="toggle-password" aria-label="Mostrar senha">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="input-group premium-input mt-4">
-                        <label for="nova_senha">Nova Senha (opcional)</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-lock left-icon"></i>
-                            <input type="password" id="nova_senha" name="nova_senha" placeholder="Digite apenas se quiser mudar">
-                            <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
-                        </div>
+                    <div style="margin-top: 15px;">
+                        <button type="submit" class="btn-primary auth-submit premium-btn" style="width: 100%; height: 56px;">
+                            Salvar Alterações <i class="fa-solid fa-check"></i>
+                        </button>
                     </div>
-
-                    <button type="submit" class="btn-primary auth-submit premium-btn">
-                        Salvar Alterações <i class="fa-solid fa-check"></i>
-                    </button>
                 </form>
+
             </div>
         </div>
     </section>

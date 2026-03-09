@@ -6,23 +6,49 @@
     <title>{% block title %}Prime Corte{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Estilos do Toast Notification */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { min-width: 250px; padding: 15px 20px; background: var(--card-bg, #1e1e1e); color: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); opacity: 0; transform: translateX(100%); transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-left: 5px solid #d4af37; font-weight: 500; }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast.success { border-left-color: #28a745; }
+        .toast.error { border-left-color: #dc3545; }
+    </style>
 </head>
 <body>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-wrapper">
+    <div id="toast-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash-message flash-{{ category }}">
+                    <div class="toast {{ category }}">
+                        {% if category == 'success' %}<i class="fa-solid fa-circle-check"></i>{% else %}<i class="fa-solid fa-circle-exclamation"></i>{% endif %}
                         {{ message }}
                     </div>
                 {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <button id="theme-toggle" class="btn-nav-outline" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; width: 50px; height: 50px; border-radius: 50%; padding: 0; display: grid; place-items: center; background: var(--bg-card); border: 1px solid var(--line); color: var(--text);">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 
     {% block content %}{% endblock %}
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Lógica dos Toasts Modernos
+        document.addEventListener("DOMContentLoaded", () => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach((toast, index) => {
+                setTimeout(() => { toast.classList.add('show'); }, 100 * index);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 400);
+                }, 3500 + (100 * index));
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Gestão de Profissionais{% endblock %}
+
+{% block content %}
+<style>
+    .prof-card-premium {
+        background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px;
+        overflow: hidden; display: flex; flex-direction: column; position: relative;
+    }
+    .prof-image-header {
+        height: 220px; width: 100%; position: relative;
+        background: linear-gradient(135deg, #1e1e24, #111116);
+        display: flex; align-items: center; justify-content: center;
+        border-bottom: 1px solid var(--line);
+    }
+    .prof-image-header img {
+        width: 100%; height: 100%; object-fit: cover; opacity: 0.9;
+    }
+    .prof-initial-fallback {
+        font-size: 5rem; font-weight: 800; color: rgba(212, 175, 55, 0.4);
+        text-transform: uppercase;
+    }
+    .prof-status-badge {
+        position: absolute; top: 15px; right: 15px; padding: 6px 14px;
+        border-radius: 99px; font-size: 0.8rem; font-weight: 700;
+        backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-on { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+    .status-off { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    
+    .prof-body { padding: 24px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: space-between;}
+    .prof-body h3 { font-size: 1.5rem; margin-bottom: 5px; color: var(--white); font-weight: 700; }
+    .prof-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+    
+    /* Input Ficheiro Estilizado */
+    input[type=file]::file-selector-button {
+        padding: 10px 16px; border-radius: 8px; background: rgba(255,255,255,0.05);
+        border: 1px solid var(--line); color: var(--gold); cursor: pointer;
+        transition: 0.3s; margin-right: 15px;
+    }
+    input[type=file]::file-selector-button:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--gold); }
+</style>
+
+<header class="header">
+    <div class="container nav">
+        <div class="logo"><i class="fa-solid fa-scissors"></i><span>Prime Corte</span></div>
+        <nav class="nav-menu" id="nav-menu">
+            {% if session.user_tipo == 'admin' %}
+                <a href="/admin/agendamentos">Agendamentos</a>
+                <a href="/admin/servicos">Serviços</a>
+                <a href="/admin/profissionais">Profissionais</a>
+            {% else %}
+                <a href="/">Início</a>
+                <a href="/agendar">Agendar</a>
+                <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            {% endif %}
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<main class="dashboard-page professionals-page" style="padding-bottom: 100px;">
+    <section class="schedule-hero" style="padding: 50px 0 30px; text-align: center;">
+        <div class="container">
+            <span class="section-tag" style="margin-bottom: 15px;">Dashboard Staff</span>
+            <h1 style="font-size: 3rem; font-weight: 800; color: var(--white); margin-bottom: 10px;">Equipa Prime</h1>
+            <p style="color: var(--muted); font-size: 1.1rem;">Controlo total do seu time de mestres.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div style="background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 30px; margin-bottom: 40px;">
+            <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--white);">
+                <i class="fa-solid fa-plus-circle" style="color: var(--gold); margin-right: 8px;"></i> Adicionar Novo Membro
+            </h3>
+            
+            <form method="POST" action="/admin/profissionais/novo" enctype="multipart/form-data" style="display: grid; grid-template-columns: minmax(200px, 1.5fr) minmax(200px, 1.5fr) auto; gap: 15px; align-items: center;">
+                
+                <input type="text" name="nome" placeholder="Nome do barbeiro..." required style="padding: 16px 20px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.1); color: var(--text); font-size: 1rem; width: 100%;">
+                
+                <input type="file" name="foto" accept="image/*" style="padding: 8px 10px; border-radius: 12px; border: 1px dashed var(--line); background: rgba(0,0,0,0.1); color: var(--text); font-size: 0.95rem; width: 100%; cursor: pointer;">
+                
+                <button type="submit" class="btn-primary" style="height: 52px; border-radius: 12px; font-size: 1rem; padding: 0 30px;">
+                    Salvar Profissional
+                </button>
+            </form>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+            {% if profissionais %}
+                {% for prof in profissionais %}
+                    <div class="prof-card-premium" style="{% if prof.ativo == 0 %}opacity: 0.6; filter: grayscale(1);{% endif %}">
+                        
+                        <div class="prof-image-header">
+                            <div class="prof-status-badge {% if prof.ativo == 1 %}status-on{% else %}status-off{% endif %}">
+                                {% if prof.ativo == 1 %}Ativo{% else %}Inativo{% endif %}
+                            </div>
+                            
+                            {% if prof.foto %}
+                                <img src="{{ url_for('static', filename='uploads/profissionais/' + prof.foto) }}" alt="Foto do Barbeiro">
+                            {% else %}
+                                <div class="prof-initial-fallback">{{ prof.nome[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="prof-body">
+                            <div>
+                                <h3>{{ prof.nome }}</h3>
+                                <p style="color: var(--muted); font-size: 0.9rem;">Ref ID: #{{ prof.id }}</p>
+                            </div>
+
+                            <div class="prof-actions">
+                                <a href="/admin/profissionais/editar/{{ prof.id }}" class="btn-secondary" style="height: 40px; font-size: 0.9rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <i class="fa-solid fa-pen"></i> Editar
+                                </a>
+
+                                {% if prof.ativo == 1 %}
+                                    <a href="/admin/profissionais/status/{{ prof.id }}/0" class="btn-secondary" style="height: 40px; font-size: 0.9rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; color: #ef4444; border-color: rgba(239,68,68,0.3);" onclick="return confirm('Desativar profissional?')">
+                                        <i class="fa-solid fa-power-off"></i> Desligar
+                                    </a>
+                                {% else %}
+                                    <a href="/admin/profissionais/status/{{ prof.id }}/1" class="btn-secondary" style="height: 40px; font-size: 0.9rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; color: #4ade80; border-color: rgba(74,222,128,0.3);">
+                                        <i class="fa-solid fa-check"></i> Reativar
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 20px;">
+                    <i class="fa-solid fa-users-slash" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                    <p style="font-size: 1.1rem;">Nenhum profissional cadastrado na base de dados.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

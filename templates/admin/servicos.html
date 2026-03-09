@@ -11,10 +11,18 @@
         </div>
 
         <nav class="nav-menu" id="nav-menu">
-            <a href="/">Início</a>
-            <a href="/admin/agendamentos">Agendamentos</a>
-            <a href="/admin/servicos">Serviços</a>
-            <a href="/logout" class="btn-nav-outline">Sair</a>
+            {% if session.user_tipo == 'admin' %}
+                <a href="/admin/agendamentos">Agendamentos</a>
+                <a href="/admin/servicos">Serviços</a>
+                <a href="/admin/profissionais">Profissionais</a>
+            {% else %}
+                <a href="/">Início</a>
+                <a href="/agendar">Agendar</a>
+                <a href="/cliente/agendamentos">Meus Agendamentos</a>
+            {% endif %}
+            <a href="/mensagens">Mensagens</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/logout" class="btn-nav-outline exit-btn">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
         </nav>
 
         <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">

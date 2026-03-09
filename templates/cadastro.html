@@ -11,7 +11,7 @@
             <div class="brand-hero">
                 <i class="fa-solid fa-star"></i>
                 <h2>Novo Cliente</h2>
-                <p>Junte-se à barbearia que é referência. Tenha total controle sobre seus cortes e horários.</p>
+                <p>Junte-se à barbearia que é referência. Tenha total controlo sobre os seus cortes e horários.</p>
             </div>
         </div>
     </div>
@@ -20,25 +20,32 @@
         <div class="form-box form-box-wide">
             <div class="auth-header text-left">
                 <a href="/" class="back-link-mobile"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
-                
-                <h1>Crie sua conta</h1>
+                <h1>Crie a sua conta</h1>
                 <p>Preencha os dados abaixo para fazer parte da Prime Corte.</p>
             </div>
 
-            <form method="POST" class="auth-form two-cols">
+            <form method="POST" class="auth-form two-cols" id="form-cadastro">
                 <div class="input-group premium-input full-width">
                     <label for="nome">Nome Completo</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-user left-icon"></i>
-                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                        <input type="text" id="nome" name="nome" placeholder="Digite o seu nome" required>
                     </div>
                 </div>
 
-                <div class="input-group premium-input full-width">
+                <div class="input-group premium-input">
                     <label for="email">E-mail</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-envelope left-icon"></i>
-                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                        <input type="email" id="email" name="email" placeholder="Digite o seu e-mail" required>
+                    </div>
+                </div>
+
+                <div class="input-group premium-input">
+                    <label for="telefone">Telefone</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone left-icon"></i>
+                        <input type="text" id="telefone" name="telefone" placeholder="O seu telefone (opcional)">
                     </div>
                 </div>
 
@@ -47,9 +54,6 @@
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock left-icon"></i>
                         <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
-                        <button type="button" class="toggle-password" aria-label="Mostrar senha">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
                     </div>
                 </div>
 
@@ -58,11 +62,9 @@
                     <div class="input-wrapper">
                         <i class="fa-solid fa-check-double left-icon"></i>
                         <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a senha" required>
-                        <button type="button" class="toggle-password" aria-label="Mostrar senha">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
                     </div>
                 </div>
+                <div id="erro-senha" style="color: #dc3545; grid-column: 1 / -1; display: none; font-size: 0.9rem;">As senhas não coincidem.</div>
 
                 <button type="submit" class="btn-primary auth-submit premium-btn full-width mt-2">
                     Finalizar Cadastro <i class="fa-solid fa-check"></i>
@@ -75,4 +77,29 @@
         </div>
     </div>
 </main>
+
+<script>
+    document.getElementById('form-cadastro').addEventListener('submit', function(e) {
+        const senha = document.getElementById('senha').value;
+        const confirmar = document.getElementById('confirmar_senha').value;
+        const erroMsg = document.getElementById('erro-senha');
+        
+        if (senha !== confirmar) {
+            e.preventDefault(); 
+            erroMsg.style.display = 'block'; 
+        } else {
+            erroMsg.style.display = 'none';
+        }
+    });
+
+    document.getElementById('confirmar_senha').addEventListener('input', function() {
+        const senha = document.getElementById('senha').value;
+        const erroMsg = document.getElementById('erro-senha');
+        if (senha && this.value && senha !== this.value) {
+            erroMsg.style.display = 'block';
+        } else {
+            erroMsg.style.display = 'none';
+        }
+    });
+</script>
 {% endblock %}

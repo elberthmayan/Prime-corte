@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Prime Corte | Editar Staff{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container nav">
+        <div class="logo"><i class="fa-solid fa-scissors"></i><span>Prime Corte</span></div>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="/admin/profissionais">Voltar para Equipa</a>
+        </nav>
+    </div>
+</header>
+
+<main class="auth-page">
+    <section class="auth-section">
+        <div class="container auth-container">
+            <div class="auth-card" style="padding: 40px;">
+                <div class="auth-header text-center" style="margin-bottom: 35px;">
+                    <span class="section-tag" style="background: rgba(212, 175, 55, 0.1);"><i class="fa-solid fa-user-pen"></i> Atualização de Cadastro</span>
+                    <h1 style="font-size: 2.2rem; margin-top: 15px;">Editar Staff</h1>
+                    <p style="color: var(--muted);">Modifique as credenciais do barbeiro selecionado.</p>
+                </div>
+
+                <form method="POST" class="auth-form" enctype="multipart/form-data" style="display: grid; gap: 22px;">
+                    
+                    <div class="input-group">
+                        <label for="nome" style="color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Nome Público</label>
+                        <input type="text" id="nome" name="nome" value="{{ prof.nome }}" required style="padding: 16px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--line); color: #fff; font-size: 1.1rem;">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="foto" style="color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Fotografia (Opcional)</label>
+                        
+                        {% if prof.foto %}
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 12px;">
+                                <img src="{{ url_for('static', filename='uploads/profissionais/' + prof.foto) }}" alt="Atual" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold);">
+                                <span style="font-size: 0.9rem; color: var(--muted);">Imagem atual já cadastrada.</span>
+                            </div>
+                        {% endif %}
+
+                        <input type="file" id="foto" name="foto" accept="image/*" style="padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px dashed var(--line); color: var(--muted); cursor: pointer; width: 100%;">
+                        <small style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-top: 5px;">Selecione uma imagem quadrada (ex: 500x500px) para melhor visualização.</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-submit" style="margin-top: 15px; height: 56px; border-radius: 12px; font-size: 1.05rem;">
+                        Salvar Modificações
+                    </button>
+                </form>
+                
+                <div class="auth-links text-center" style="margin-top: 25px;">
+                    <a href="/admin/profissionais" style="color: var(--muted); opacity: 0.7; transition: 0.3s;"><i class="fa-solid fa-arrow-left"></i> Cancelar e Voltar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<style>
+    /* Estilização Extra do Input de Arquivo */
+    input[type=file]::file-selector-button {
+        padding: 10px 16px; border-radius: 8px; background: rgba(212, 175, 55, 0.1);
+        border: 1px solid var(--gold); color: var(--gold); cursor: pointer;
+        transition: 0.3s; margin-right: 15px; font-weight: 600;
+    }
+    input[type=file]::file-selector-button:hover { background: var(--gold); color: #000; }
+</style>
+{% endblock %}

@@ -57,7 +57,9 @@ waContacts.forEach(contact => {
 
         carregarMensagensGlobais();
         clearInterval(chatGlobalInterval);
-        chatGlobalInterval = setInterval(carregarMensagensGlobais, 3000);
+        
+        // AQUI FOI A MUDANÇA: Passou de 3000 para 10000 (10 segundos)
+        chatGlobalInterval = setInterval(carregarMensagensGlobais, 10000);
     });
 });
 
@@ -112,6 +114,7 @@ if(waBtnSend) {
     waBtnSend.addEventListener('click', enviarMensagemGlobal);
     waMsgInput.addEventListener('keypress', e => { if (e.key === 'Enter') enviarMensagemGlobal(); });
 }
+
 // ==========================================
 // MODAL DE EXCLUSÃO PERSONALIZADO
 // ==========================================
@@ -133,5 +136,101 @@ document.querySelectorAll('.btn-open-delete-modal').forEach(btn => {
 if(cancelDeleteBtn) {
     cancelDeleteBtn.addEventListener('click', () => {
         deleteModal.classList.remove('active');
+    });
+}
+
+// ==========================================
+// CORREÇÃO: ATUALIZAÇÃO DINÂMICA DE HORÁRIOS 
+// ==========================================
+const dataInput = document.getElementById('data');
+const horarioSelect = document.getElementById('horario');
+const profissionalInputs = document.querySelectorAll('input[name="profissional"]');
+
+function atualizarHorariosDisponiveis() {
+    if (!dataInput || !horarioSelect) return;
+    
+    const dataVal = dataInput.value;
+    let profissionalVal = null;
+    
+    // Descobrir qual profissional está selecionado no agendamento novo
+    profissionalInputs.forEach(input => {
+        if (input.checked) profissionalVal = input.value;
+    });
+    
+    // Se for na tela de reagendamento (que esconde o nome do profissional nalgumas views)
+    if (!profissionalVal && document.getElementById('profissional_hidden')) {
+        profissionalVal = document.getElementById('profissional_hidden').value;
+    }
+
+    if (dataVal && profissionalVal) {
+        // Pegar o ID do agendamento atual se for tela de reagendamento (para não contar a própria marcação como 'ocupada')
+        let fetchUrl = `/api/horarios-disponiveis?profissional=${encodeURIComponent(profissionalVal)}&data=${encodeURIComponent(dataVal)}`;
+        
+        const pathParts = window.location.pathname.split('/');
+        if (pathParts.includes('reagendar')) {
+            const idAgendamento = pathParts[pathParts.length - 1];
+            fetchUrl += `&ignorar_id=${idAgendamento}`;
+        }
+
+        fetch(fetchUrl)
+            .then(res => res.json())
+            .then(data => {
+                // Limpar select
+                horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
+                
+                // Povoar com os novos horários recebidos da API
+                if (data.horarios_disponiveis && data.horarios_disponiveis.length > 0) {
+                    data.horarios_disponiveis.forEach(h => {
+                        const opt = document.createElement('option');
+                        opt.value = h;
+                        opt.textContent = h;
+                        horarioSelect.appendChild(opt);
+                    });
+                } else {
+                    const opt = document.createElement('option');
+                    opt.value = "";
+                    opt.textContent = "Sem horários disponíveis";
+                    horarioSelect.appendChild(opt);
+                }
+            })
+            .catch(err => console.error("Erro ao buscar horários:", err));
+    }
+}
+
+// Escutar as alterações na Data ou nos botões de Profissional
+if (dataInput) {
+    dataInput.addEventListener('change', atualizarHorariosDisponiveis);
+}
+
+if (profissionalInputs.length > 0) {
+    profissionalInputs.forEach(input => {
+        input.addEventListener('change', atualizarHorariosDisponiveis);
+    });
+}
+// ==========================================
+// MODO CLARO / ESCURO (LIGHT/DARK THEME TOGGLE)
+// ==========================================
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+if (themeToggleBtn) {
+    const body = document.body;
+    const themeIcon = themeToggleBtn.querySelector('i');
+
+    // Verifica se já existe preferência no localStorage
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
     });
 }

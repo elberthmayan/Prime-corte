@@ -2094,3 +2094,388 @@ textarea:focus {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
 }
+/* =========================================
+   MODO CLARO (LIGHT MODE)
+========================================= */
+body.light-mode {
+    --bg: #f4f6f9;
+    --bg-soft: #ffffff;
+    --bg-card: #ffffff;
+    --line: rgba(0, 0, 0, 0.1);
+    --text: #1a1a24;
+    --muted: #6b7280;
+    --gold: #b38f25;
+    --gold-strong: #d4af37;
+    --white: #111111;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .hero-image-card,
+body.light-mode .split-form-section::before,
+body.light-mode .glow {
+    opacity: 0.5;
+}
+
+body.light-mode .input-group input, 
+body.light-mode .input-group select, 
+body.light-mode .input-group textarea,
+body.light-mode .premium-input input {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    color: var(--text) !important;
+}
+
+body.light-mode .input-group input:focus, 
+body.light-mode .premium-input input:focus {
+    border-color: var(--gold) !important;
+    background: #fff !important;
+}
+
+body.light-mode .chat-modal-content {
+    background: #ffffff;
+}
+
+body.light-mode .wa-app {
+    background: #f4f6f9;
+}
+body.light-mode .wa-chat-area {
+    background: #e8ecef;
+}
+body.light-mode .wa-theirs {
+    background: #ffffff;
+    color: #111;
+    border-color: rgba(0,0,0,0.1);
+}
+/* ==========================================================================
+   ESTILOS PREMIUM E MINIMALISTAS DO PERFIL
+   ========================================================================== */
+.profile-wrapper {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--bg-body, #0a0a0c);
+}
+
+.profile-card {
+    background: var(--bg-card, #121216);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-cover {
+    height: 180px;
+    background: linear-gradient(135deg, #1a1a24 0%, #050505 100%);
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-cover::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+}
+
+.profile-avatar-wrapper {
+    position: absolute;
+    bottom: -50px;
+    left: 40px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    z-index: 2;
+}
+
+.profile-avatar-circle {
+    width: 120px;
+    height: 120px;
+    background: var(--bg-card, #121216);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.profile-avatar-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--gold, #d4af37), #aa8c2c);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.profile-titles {
+    margin-bottom: 15px;
+}
+
+.profile-titles h1 {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.profile-titles p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+    margin: 5px 0 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-body {
+    padding: 80px 40px 40px 40px;
+}
+
+.profile-section-title {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 25px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 10px;
+}
+
+.profile-section-title i {
+    color: var(--gold, #d4af37);
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.input-minimal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-minimal label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-icon-wrap {
+    position: relative;
+}
+
+.input-icon-wrap i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4);
+    transition: 0.3s ease;
+    pointer-events: none;
+}
+
+.input-minimal input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px 16px 16px 45px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-minimal input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--gold, #d4af37);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.input-minimal input:focus + i {
+    color: var(--gold, #d4af37);
+}
+
+.btn-save-profile {
+    background: var(--gold, #d4af37);
+    color: #000;
+    border: none;
+    padding: 18px 32px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 35px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-save-profile:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Responsividade do Perfil */
+@media (max-width: 768px) {
+    .profile-wrapper {
+        padding: 20px 15px;
+        align-items: flex-start;
+    }
+    .profile-card { border-radius: 20px; }
+    .profile-cover { height: 140px; }
+    
+    .profile-avatar-wrapper {
+        flex-direction: column;
+        align-items: center;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -70px;
+        text-align: center;
+        width: 100%;
+    }
+    .profile-avatar-circle { width: 100px; height: 100px; }
+    .profile-avatar-inner { font-size: 2.5rem; }
+    .profile-titles { margin-top: 5px; margin-bottom: 0; }
+    .profile-titles h1 { font-size: 1.6rem; }
+    .profile-titles p { justify-content: center; }
+    .profile-body { padding: 100px 25px 30px 25px; }
+    
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+/* ==========================================================================
+   PERFIL PREMIUM (INTEGRADO AO DESIGN DO LOGIN/CADASTRO)
+   ========================================================================== */
+.profile-showcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--line);
+}
+
+.profile-avatar-glow {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+/* Efeito de luz dourada pulsante atrás do avatar */
+.profile-avatar-glow::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), transparent, var(--gold-strong));
+    opacity: 0.3;
+    filter: blur(12px);
+    animation: pulseGlow 3s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from { opacity: 0.15; transform: scale(0.95); }
+    to { opacity: 0.5; transform: scale(1.08); }
+}
+
+.profile-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: var(--bg-soft);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--gold);
+    text-transform: uppercase;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.profile-info h1 {
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 99px;
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Grid para alinhar os inputs 2 a 2 */
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+/* Responsividade: No telemóvel fica tudo numa coluna */
+@media (max-width: 640px) {
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-avatar {
+        width: 85px;
+        height: 85px;
+        font-size: 2.2rem;
+    }
+}
